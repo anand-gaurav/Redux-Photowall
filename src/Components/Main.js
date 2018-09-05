@@ -7,6 +7,9 @@ import { Route, Link } from 'react-router-dom'
 import SinglePhoto from './SinglePhoto'
 
 class Main extends Component {
+    state = {
+        loading : true
+    }
     /*
      called before component is mounted. NEVER put side effect code inside of the constructor.
      Use ComponentDidMount for that instead. 
@@ -17,7 +20,10 @@ class Main extends Component {
     // };
 
     componentDidMount(){        
-        this.props.startLoadingPost()
+        this.props.startLoadingPost().then(() => {
+            this.setState({loading : false})
+        })
+        this.props.startLoadingComments()
     }
 
     render() {
@@ -35,7 +41,7 @@ class Main extends Component {
                 )} />
                 {/* below params object contains history property as well. Notice the brackets instead of curly braces */}
                 <Route path="/single/:id" render={(params) => (
-                    <SinglePhoto {...this.props}{...params}/>
+                    <SinglePhoto loading={this.state.loading} {...this.props}{...params}/>
                 )} />
             </div>)
 

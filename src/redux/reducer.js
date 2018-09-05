@@ -1,4 +1,4 @@
-import initpost from '../data/post'
+//import initpost from '../data/post'
 import {combineReducers} from 'redux'
 
 function comments(state = {}, action){
@@ -11,18 +11,19 @@ function comments(state = {}, action){
             }else{
                 return {...state, [action.postId]:[...state[action.postId], action.comment]}
             }
+        case 'LOAD_COMMENTS' : return action.comments
         
         default: return state
     }
     
 }
 // initialize state with value pulled from data/post file
-function posts(state = initpost, action){
+function posts(state = [], action){
     //console.log(action.posts)
     switch(action.type){
         case 'REMOVE_POST': return [...state.slice(0,action.index), ...state.slice(action.index +1)]           
         case 'ADD_POST' : return [...state, action.post]
-        case 'LOAD_POSTS' : action.posts
+        case 'LOAD_POSTS' : return action.posts
         default: return state;
     }
     
