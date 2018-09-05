@@ -1,10 +1,10 @@
 // Importing named export 'Component' from React library
 import React, { Component } from 'react';
-import Title from './Title';
+import Header from './Header';
 import Photowall from './PhotoWall';
 import AddPhoto from './AddPhoto'
-import { Route } from 'react-router-dom'
-import * as actions from '../redux/actions'
+import { Route, Link } from 'react-router-dom'
+import SinglePhoto from './SinglePhoto'
 
 class Main extends Component {
     /*
@@ -12,27 +12,30 @@ class Main extends Component {
      Use ComponentDidMount for that instead. 
      Commonly used to initialize state or bind methods.
     */
-    constructor() {
-        super();
-    };
+    // constructor() {
+    //     super();
+    // };
 
-    // componentDidMount(){
-    //     //this.props.dispatch(removePost(1))
-    //     this.props.removePost(1)
-    // }
+    componentDidMount(){        
+        this.props.startLoadingPost()
+    }
 
-    render() {     
-        console.log(this.props)  
+    render() {
         return (
             <div>
+               <Header title="Photowall"/>
                 <Route exact path="/" render={() => (
-                    <div>
-                        <Title title={'Photowall'} />
+                    <div>                       
                         <Photowall {...this.props}/>
                     </div>
                 )} />
+                {/* history is the property of params object data. notice the curly braces */}
                 <Route path="/AddPhoto" render={({history}) => (
                     <AddPhoto {...this.props}/>
+                )} />
+                {/* below params object contains history property as well. Notice the brackets instead of curly braces */}
+                <Route path="/single/:id" render={(params) => (
+                    <SinglePhoto {...this.props}{...params}/>
                 )} />
             </div>)
 
